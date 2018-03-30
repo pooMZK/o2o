@@ -1,0 +1,346 @@
+
+<!--包含头部文件-->
+<script src="../../../../public/static/o2o/lib/laydate/laydate.js"></script>{include file="public/header" /}
+<div class="cl pd-5 bg-1 bk-gray mt-20"> 查看商品信息</div>
+<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+
+		<a href="/bis/location/checked" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6d4;</i> 返回列表</a>
+		</span>
+
+</div>
+<article class="page-container">
+	<form class="form form-horizontal" id="add" method="post" >
+	基本信息：
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>团购名称：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				{$data.name}
+			</div>
+		</div>
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>所属城市：</label>
+
+			<div class="formControls col-xs-8 col-sm-2">
+				<span class="select-box">
+
+					{$city_name}
+				</span> 
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>所属分类：</label>
+			<div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+
+					{volist name="categorys" id="vo"}
+					{if condition="$vo.id eq $data.category_id "} {$vo.name} {/if}
+					{/volist}
+
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">所属子类：</label>
+			<div class="formControls col-xs-8 col-sm-3 skin-minimal">
+				<div id="se_category" class="check-box se_category_id">
+                {volist name="se_category" id="vo"}{if condition="in_array($vo.id,$data['se_category_id']) "}<input type="checkbox" checked="checked" value="{$vo.id}" > {$vo.name} {/if} {/volist}
+				</div>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-9 col-sm-2">支持门店：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="check-box">
+				{volist name="locations" id="vo"}
+					{if condition="in_array($vo.id,$data['location_ids']) "}
+					<input  type="checkbox"  name="locations[]" value="{$vo.id}"  checked="checked" />{$vo.name}
+					{/if}
+				{/volist}
+				</div>
+			</div>
+		</div>
+	
+		<div class="row cl">
+              <label class="form-label col-xs-4 col-sm-2">缩略图：</label>
+              <div class="formControls col-xs-8 col-sm-9">
+
+                <img  id="upload_org_code_img" src="__STATIC__/{$data.image}" width="150" height="150">
+
+              </div>
+        </div>
+        <div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">团购开始时间：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				
+				{$data.start_time}
+
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">团购结束时间:</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				
+				{$data.end_time}
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">库存数:</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				{$data.total_count}
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">原价:</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				{$data.origin_price}
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">团购价:</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				{$data.current_price}
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">消费券生效时间：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				
+				{$data.coupons_begin_time}
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">消费券结束时间:</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				
+				{$data.coupons_end_time}
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">团购描述：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+			{$data.description}
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">购买须知：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				{$data.notes}
+			</div>
+		</div>
+		
+		<div class="row cl">
+			<div id="submit" class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button  class="btn btn-primary radius" ><i class="Hui-iconfont">&#xe6a7;</i>审核通过</button>
+				<button  class="btn btn-primary radius" ><i class="Hui-iconfont">&#xe6a6;</i> 不通过</button>
+			</div>
+		</div>
+	</form>
+</article>
+<script>
+/**定义页面全局变量**/
+var SCOPE = {
+	"city_url" : "{:url('api/city/getCitysByParentId')}",
+	"category_url" : "{:url('api/category/getCategoryByParentId')}",
+	"uploadify_swf" : "__STATIC__/admin/uploadify/uploadify.swf",
+    "image_upload" : "{:url('api/image/upload')}",
+};
+
+</script>
+<!--包含头部文件-->
+{include file="public/footer" /}
+<script type="text/javascript" src="__O2O__/lib/ueditor/1.4.3/ueditor.config.js"></script>
+<script type="text/javascript" src="__O2O__/lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
+<script type="text/javascript" src="__O2O__/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" src="__O2O__/lib/laydate/laydate.js"></script>
+<script type="text/javascript" src="__O2O__/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__O2O__/uploadify/jquery.uploadify.min.js"></script>
+
+<script>
+$(function(){
+	var ue = UE.getEditor('editor');
+	var ue = UE.getEditor('editor2');
+
+	//uploadify时间插件
+    $("#file_upload").uploadify({
+        height        : 30,
+        swf           : '/static/o2o/uploadify/uploadify.swf',
+        uploader      : '/bis/api/image',
+        width         : 120,
+        buttonText    :'图片上传',
+        fileObjName   :'file',//这必须输，TP5按name识别的，这个就name
+        fileTypeExts  :'*.gif;*.jpg;*.png',
+        onUploadSuccess:function (file,data,response) {
+            console.log(file);
+            console.log('data:'+data);
+            console.log('res:'+response);
+            var data=JSON.parse(data)
+            if(data.code == 1){
+
+                $('#file_upload_image').val('/images/'+data.comment);
+                $('#upload_org_code_img').attr("src",'/images/'+data.comment);
+                $('#upload_org_code_img').css("display","block");
+
+            }else {
+                layer.msg( data.comment,{icon:2,time:2000});
+            }
+
+        }
+    });
+
+
+    //分类相关二级内容
+    $(".categoryId").change(function () {
+        $.post("/bis/api/category",
+            {
+
+                pid:$(this).val(),
+
+            },
+            function(result){
+
+                //        $("#se_city").append("{vlist name='se_city' id='vo'}<option value='{$vo.id}'>{$vo.name}</option>{/volist}");
+                if(result.code == 1){
+                    var data=result.data;
+                    //alert(data.length);
+                    var secategory_html='';
+                    for (var i=0;i<data.length;i++)
+                    {
+                        // document.write(data[i]['name'] + "<br>");
+
+                        secategory_html += "<input class='skin-minimal input' name='se_category_id[]' value="+data[i]['id']+" type='checkbox'>"+data[i]['name']+"";
+
+                    }
+                    //alert(111);
+                    $('#se_category').html(secategory_html);
+
+                }else {
+
+                    layer.msg('该分类下无子分类',{icon:2,time:2000});
+                    $('#se_category').html('<p>无子分类</p>');
+                }
+            },'json');
+    });
+
+    //城市相关二级内容
+    $(".cityId").change(function () {
+        $.post("/bis/api/city",
+            {
+                //  pid:$("#city").val(),
+                pid:$(this).val(),
+
+            },
+            function(result){
+
+                //        $("#se_city").append("{vlist name='se_city' id='vo'}<option value='{$vo.id}'>{$vo.name}</option>{/volist}");
+                if(result.code == 1){
+                    var data=result.data;
+                    //alert(data.length);
+                    var secity_html='';
+                    for (var i=0;i<data.length;i++)
+                    {
+                        // document.write(data[i]['name'] + "<br>");
+
+                        secity_html += "<option name='se_city_id' value='"+data[i]['id']+"'>"+data[i]['name']+"</option>";
+
+                    }
+                    //alert(111);
+                    $('#se_city').html(secity_html);
+
+                }else {
+
+                    layer.msg('后台数据出错',{icon:2,time:2000});
+                }
+            },'json');
+    });
+
+    //日期时间选择器
+    lay('.time').each(function(){
+        laydate.render({
+            elem:this,
+            type: 'datetime',
+            calendar: true,
+            trigger: 'click',
+        });
+    });
+
+    //表单验证及ajax提交
+    $(".form").validate({
+        rules:{
+
+			name:{
+                    required:true,
+
+			},
+			start_time:{
+			    required:true
+			},
+            end_time:{
+                required:true
+            },
+            coupons_start_time:{
+                required:true
+            },
+            coupons_end_time:{
+                required:true
+            }
+
+
+
+
+        },
+
+
+        messages:{
+            name:{
+                required:"输入啊大哥",
+                // remote:"已存在相同名称的分类，请修正此字段",
+            }
+        },
+
+        onfocusout:true,
+        onkeyup:true,
+        focusCleanup:false,
+        focusInvalid:true,
+
+        submitHandler:function(form){
+            $('#submit').css('display','none')
+            $(form).ajaxSubmit({
+                type: 'post',
+                url: "/bis/deal/save",
+                success: function(resdata){
+                    if(resdata.code == '1') {
+
+                        layer.msg('添加数据成功,正在重置！',{icon:1,time:1000});
+
+                        //     history.go(-1);
+
+                        document.getElementById("add").reset();
+                        $('#submit').css('display','block');
+
+
+                    }else {
+                        $('#submit').css('display','block')
+                        layer.msg(resdata.msg,{icon:2,time:1000});
+                    }
+
+
+                },
+                error: function(XmlHttpRequest, textStatus, errorThrown){
+                    $('#submit').css('display','block')
+                    layer.msg('ajax连接后台出错',{icon:2,time:3000});
+
+                }
+            });
+
+
+        }
+    });
+});
+
+
+</script>
+</body>
+</html>

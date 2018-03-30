@@ -1,0 +1,191 @@
+<!--包含头部文件-->
+{include file="public/header" /}
+<div class="cl pd-5 bg-1 bk-gray mt-20"> 查看分店信息</div>
+
+<article class="page-container">
+	<form class="form form-horizontal" id="form" method="post" action="">
+	基本信息：
+		<div style="display: none">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>ID：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+
+				<input type="text"  class="input-text" value="{$data.id}" placeholder="" id="id" name="id">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>分店名称：</label>
+			<dvi class="formControls col-xs-8 col-sm-3">
+				{$data.name}
+
+			</dvi>
+		</div>
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>所属城市：</label>
+			<div class="formControls col-xs-8 col-sm-2"> 
+				<span class="select-box">
+
+					{volist name="citys" id="vo"}
+
+					{if condition="$data.city_id eq $vo.id"} {$vo.name} {/if}
+
+					{/volist}
+
+				</span>
+			</div>
+			<div class="formControls col-xs-8 col-sm-2">
+				<span class="select-box">
+				{$se_city_name}
+				</span> 
+			</div>
+		</div>
+	
+		<div class="row cl">
+              <label class="form-label col-xs-4 col-sm-2">缩略图：</label>
+              <div class="formControls col-xs-8 col-sm-9">
+
+                <img  id="upload_org_code_img" src="__STATIC__/{$data.logo}" width="200" height="200">
+
+              </div>
+        </div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">门店介绍：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				{$data.content}
+			</div>
+		</div>
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>所属分类：</label>
+			<div class="formControls col-xs-8 col-sm-3"> <span class="select-box">
+
+					{volist name="categorys" id="vo"}
+
+					{if condition="$data.category_id eq $vo.id"} {$vo.name} {/if}
+
+					{/volist}
+
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">所属子类：</label>
+			<div  class="formControls col-xs-8 col-sm-3 skin-minimal">
+				<div id="se_category" class="check-box se_category_id">
+					{volist name="se_cat_name" id="vo"}
+					{$vo.name}
+					{/volist}
+				</div>
+
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">地址：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				{$data.address}
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>电话:</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				{$data.tel}
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">联系人:</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				{$data.contact}
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">营业时间:</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				{$data.open_time}
+			</div>
+		</div>
+		
+
+	</form>
+</article>
+
+<!--包含尾部文件-->
+{include file="public/footer" /}
+<script type="text/javascript" src="__O2O__/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__O2O__/uploadify/jquery.uploadify.min.js"></script>
+
+<script type="text/javascript" src="__O2O__/lib/ueditor/1.4.3/ueditor.config.js"></script>
+<script type="text/javascript" src="__O2O__/lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
+<script type="text/javascript" src="__O2O__/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+
+
+<script>
+
+    //分类相关二级内容
+    $(".categoryId").change(function () {
+        $.post("/bis/api/category",
+            {
+
+                pid:$(this).val(),
+
+            },
+            function(result){
+
+                //        $("#se_city").append("{vlist name='se_city' id='vo'}<option value='{$vo.id}'>{$vo.name}</option>{/volist}");
+                if(result.code == 1){
+                    var data=result.data;
+                    //alert(data.length);
+                    var secategory_html='';
+                    for (var i=0;i<data.length;i++)
+                    {
+                        // document.write(data[i]['name'] + "<br>");
+
+                        secategory_html += "<input class='skin-minimal input' name='se_category_id[]' value="+data[i]['id']+" type='checkbox'>"+data[i]['name']+"";
+
+                    }
+                    //alert(111);
+                    $('#se_category').html(secategory_html);
+
+                }else {
+
+                    layer.msg('该分类下无子分类',{icon:2,time:2000});
+                    $('#se_category').html('<p>无子分类</p>');
+                }
+            },'json');
+    });
+
+    //城市相关二级内容
+    $(".cityId").change(function () {
+        $.post("/bis/api/city",
+            {
+                //  pid:$("#city").val(),
+                pid:$(this).val(),
+
+            },
+            function(result){
+
+                //        $("#se_city").append("{vlist name='se_city' id='vo'}<option value='{$vo.id}'>{$vo.name}</option>{/volist}");
+                if(result.code == 1){
+                    var data=result.data;
+                    //alert(data.length);
+                    var secity_html='';
+                    for (var i=0;i<data.length;i++)
+                    {
+                        // document.write(data[i]['name'] + "<br>");
+
+                        secity_html += "<option name='se_city_id' value='"+data[i]['id']+"'>"+data[i]['name']+"</option>";
+
+                    }
+                    //alert(111);
+                    $('#se_city').html(secity_html);
+
+                }else {
+
+                    layer.msg('后台数据出错',{icon:2,time:2000});
+                }
+            },'json');
+    });
+</script>
+
+</body>
+</html>

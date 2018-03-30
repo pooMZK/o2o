@@ -1,0 +1,48 @@
+<aside class="Hui-aside">
+	<input runat="server" id="divScrollValue" type="hidden" value="" />
+	<div class="menu_dropdown bk_2">
+		<dl id="menu-location">
+			<dt><i class="Hui-iconfont">&#xe616;</i> 门店管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a data-href="{:url('location/index')}" data-title="门店管理" href="javascript:void(0)">门店列表</a></li>
+				</ul>
+				<ul>
+					<li><a data-href="{:url('location/add')}" data-title="门店添加" href="javascript:void(0)">添加门店</a></li>
+				</ul>
+			</dd>
+
+		</dl>
+
+
+		<dl id="menu-product">
+			<dt><i class="Hui-iconfont">&#xe620;</i> 团购管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a data-href="{:url('deal/index')}" data-title="团购管理" href="javascript:void(0)">团购商品列表</a></li>
+					</ul>
+				<ul>
+					<li><a data-href="{:url('deal/add')}" data-title="团购管理" href="javascript:void(0)">团购商品添加</a></li>
+				</ul>
+				<ul>
+					<li><a data-href="{:url('deal/checked')}" data-title="团购管理" href="javascript:void(0)">团购商品审核</a></li>
+				</ul>
+			</dd>
+		</dl>
+		
+		<dl id="menu-admin">
+			<dt><i class="Hui-iconfont">&#xe62d;</i> 角色管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a data-href="{:url('rbac/account')}" data-title="人员管理" href="javascript:void(0)">人员管理</a></li>
+				</ul>
+				<ul>
+					<li><a data-href="{:url('rbac/role')}" data-title="角色管理" href="javascript:void(0)">角色管理</a></li>
+				</ul>
+			</dd>
+
+		</dl>
+		
+		
+	</div>
+</aside>

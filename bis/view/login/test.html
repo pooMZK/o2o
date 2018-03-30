@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .clearfix:after{content:"\20";display:block;height:0;clear:both;visibility:hidden}.clearfix{zoom:1}
+        .tabBar {border-bottom: 2px solid #222}
+        .tabBar span {background-color: #e8e8e8;cursor: pointer;display: inline-block;float: left;font-weight: bold;height: 30px;line-height: 30px;padding: 0 15px}
+        .tabBar span.current{background-color: #222;color: #fff}
+        .tabCon {display: none}
+    </style>
+    <title>Title</title>
+</head>
+<body>
+<div id="tab_demo" class="HuiTab">
+    <div class="tabBar clearfix"><span>选项卡一</span><span>选项卡二</span><span>自适应宽度</span></div>
+    <div class="tabCon">内容一</div>
+    <div class="tabCon">内容二</div>
+    <div class="tabCon">内容三</div>
+</div>
+
+<script type="text/javascript" src="__O2O__/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__O2O__/static/h-ui/js/H-ui.js"></script>
+<script type="text/javascript">
+    $(function(){ $("#tab_demo").Huitab(); $("#tab_demo").Huitab({ tabEvent:mousemove, index:1 }); });
+
+</script>
+</body>
+</html>
